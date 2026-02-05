@@ -1,0 +1,232 @@
+:root {
+    --primary-color: #8ECAE6;
+    --secondary-color: #219EBC;
+    --text-color: #023047;
+    --bg-color: #F0F8FF;
+    --card-bg: #FFFFFF;
+}
+
+body {
+    font-family: 'Sarabun', sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden; /* ป้องกันการเลื่อน */
+}
+
+/* 2. บังคับกล่องหน้าจอให้เต็มความกว้างมือถือ */
+.screen {
+    text-align: center;
+    width: 100%;           /* กว้างเต็ม 100% */
+    max-width: 450px;      /* ขยาย Max-width ให้กว้างขึ้นอีกนิด (เดิม 380) */
+    margin: 0 auto;
+    padding: 25px;         /* เพิ่มพื้นที่ขอบ */
+    box-sizing: border-box;
+    display: flex;         /* จัดให้อยู่กึ่งกลางแนวตั้ง */
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;     /* ให้ความสูงเต็มจอเสมอ */
+}
+
+.hidden { display: none; }
+.active { display: block; }
+
+h1 { font-family: 'Mali', cursive; color: var(--text-color); }
+
+/* ปุ่ม Mood */
+.mood-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 30px;}
+.mood-btn {
+    background: white; border: 2px solid var(--secondary-color);
+    padding: 15px 25px; border-radius: 25px; cursor: pointer;
+    font-family: 'Mali', cursive;
+    font-size: 18px;       /* เพิ่มขนาดตัวหนังสือในปุ่ม */
+    color: #023047;
+    cursor: pointer;
+    transition: all 0.3s;
+    
+    /* ให้ปุ่มขยายเต็มพื้นที่มือถือ */
+    flex: 1 1 45%;         
+    margin: 5px;
+}
+.mood-btn:hover { background: var(--secondary-color); color: white; transform: scale(1.05); }
+
+/* ปุ่มเพลง */
+#music-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 20px; cursor: pointer; }
+
+/* --- ส่วนสำคัญ: Animation การพลิกการ์ด --- */
+.scene {
+    width: 300px; height: 450px; perspective: 1000px; margin: 20px auto;
+}
+.card {
+    width: 100%; height: 100%; position: relative;
+    transition: transform 1s; transform-style: preserve-3d; cursor: pointer;
+    margin: 0 auto 20px auto; /* จัดกึ่งกลาง */
+}
+.card.is-flipped { transform: rotateY(180deg); }
+
+.card-face {
+    position: absolute; width: 100%; height: 100%;
+    backface-visibility: hidden; border-radius: 15px;
+    display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1); padding: 20px; box-sizing: border-box;
+}
+
+.card-front {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    font-family: 'Mali', cursive; font-size: 24px; color: #555;
+}
+
+/* style.css */
+
+/* ปรับแต่งหลังการ์ดให้เป็นโพลารอยด์ */
+.card-back {
+    background-color: white;
+    transform: rotateY(180deg);
+    padding: 15px; /* ขอบขาวรอบๆ */
+    display: flex;
+    flex-direction: column; /* เรียงบนลงล่าง */
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+}
+
+.polaroid-frame {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.image-container {
+    width: 100%;
+    height: 60%; /* รูปกินพื้นที่ 60% */
+    background-color: #f0f0f0;
+    margin-bottom: 15px;
+    overflow: hidden;
+    border-radius: 5px;
+    position: relative;
+}
+
+#card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ให้ภาพเต็มกรอบสวยๆ ไม่เบี้ยว */
+    display: none; /* ซ่อนก่อนโหลดเสร็จ */
+}
+
+/* ข้อความคำถาม */
+#question-text {
+    font-family: 'Mali', cursive; /* ใช้ฟอนต์ลายมือ */
+    font-size: 18px;
+    color: #333;
+    line-height: 1.5;
+    text-align: center;
+    flex-grow: 1; /* ให้ข้อความยืดเต็มพื้นที่ที่เหลือ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* เพิ่มความสวยงามตอนโหลดภาพ */
+.loading-spinner {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px; color: #999;
+}
+
+/* พื้นที่เขียนตอบ */
+textarea {
+    width: 100%; height: 120px; margin-top: 20px; padding: 15px;
+    border-radius: 10px; border: 1px solid #ddd; 
+    font-family: 'Sarabun' , sans-serif;
+    font-size: 16px;       /* ตัวหนังสือตอนพิมพ์ใหญ่อ่านง่าย */
+    resize: none;
+    box-sizing: border-box;
+}
+
+.action-buttons button {
+    margin-top: 10px; padding: 10px 20px; border: none; border-radius: 8px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 16px;       /* ตัวใหญ่ขึ้น */
+    cursor: pointer;
+    margin: 5px;
+    flex: 1;               /* ให้ปุ่มยืดเท่าๆ กัน */
+    background-color: var(--secondary-color); color: white; cursor: pointer;
+}
+/* จัดปุ่มด้านล่างให้เรียงสวยในมือถือ */
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;       /* ถ้ายาวเกินให้ปัดลงบรรทัดใหม่ */
+}
+
+/* กล่องกระซิบฮีลใจ */
+/* แก้ไขตำแหน่ง Whisper Box */
+/* แก้ไข style.css */
+
+#whisper-box {
+    position: fixed;
+    top: 65px; /* ขยับลงมาอีกนิด ให้ดูไม่ชิดขอบบนเกินไป */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    /* --- ส่วนที่แก้ไข: ทำให้โปร่งใส --- */
+    background-color: transparent; /* พื้นหลังโปร่งใส */
+    box-shadow: none;              /* เอาเงาออก */
+    border: none;                  /* เอากรอบออก */
+    /* ------------------------------- */
+
+    padding: 8px; /* ลด padding ลง เพราะไม่มีกรอบแล้ว */
+    text-align: center;
+    z-index: 2000;
+    width: 90%;    /* เพิ่มความกว้างให้ข้อความไม่เบียดกัน */
+    max-width: 500px;
+    transition: all 0.5s ease-in-out;
+    pointer-events: none; 
+}
+
+/* เพิ่ม: ปรับสีข้อความภาษาไทยให้เข้มขึ้นนิดนึง เพื่อให้อ่านง่ายบนพื้นหลังโปร่งใส */
+#whisper-th {
+    font-size: 15px !important; /* เพิ่มขนาดนิดนึง */
+    color: #333 !important;     /* เปลี่ยนจากสีเทา #555 เป็นสีเกือบดำ #333 */
+    text-shadow: 0 1px 2px rgba(255,255,255,0.8); /* (ทางเลือก) เพิ่มเงาขาวจางๆ หลังตัวหนังสือ ช่วยให้อ่านง่ายขึ้นถ้าพื้นหลังเข้ม */
+}
+
+/* ... ส่วน .whisper-hidden / .whisper-visible เก็บไว้เหมือนเดิม ... */
+
+/* ปรับทิศทางการเลื่อนตอนซ่อน */
+.whisper-hidden {
+    opacity: 0;
+    transform: translate(-50%, -20px) !important; /* เลื่อนขึ้นบนตอนซ่อน */
+}
+
+.whisper-visible {
+    opacity: 1;
+    transform: translate(-50%, 0) !important;
+}
+
+/* สไตล์สำหรับคำโปรยหน้าแรก */
+.intro-text {
+    font-family: 'Mali', cursive; /* ใช้ฟอนต์ลายมือ ดูน่ารัก */
+    font-size: 18px;              /* ขนาดกำลังดี อ่านสบาย */
+    color: #6c757d;               /* สีเทาหม่น ดูสุภาพและสบายตา */
+    line-height: 1.6;             /* ระยะห่างบรรทัด ไม่เบียดกัน */
+    max-width: 85%;               /* บีบความกว้าง ไม่ให้ข้อความยาวไป */
+    margin: 10px auto 30px auto;  /* จัดกึ่งกลาง และเว้นระยะห่างจากปุ่ม */
+    font-weight: 400;
+    
+    /* Animation: ให้ข้อความค่อยๆ ปรากฏ (Fade In) */
+    animation: fadeInIntro 1.5s ease-out;
+}
+
+@keyframes fadeInIntro {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Be kind to yourself.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&family=Mali:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="mood-screen" class="screen active">
+<img src="https://cdn-icons-png.flaticon.com/512/3222/3222800.png" width="90" style="margin-bottom: 15px;">  
+<h1>วันนี้ใจคุณเป็นอย่างไร?</h1>      
+        <div id="intro-message" class="intro-text">
+            ...
+        </div>
+
+        <div class="mood-container">
+            <button class="mood-btn" onclick="selectMood('happy')">😊 มีความสุข</button>
+            <button class="mood-btn" onclick="selectMood('tired')">😩 เหนื่อยล้า</button>
+            <button class="mood-btn" onclick="selectMood('confused')">🤔 สับสน</button>
+            <button class="mood-btn" onclick="selectMood('sad')">😢 เศร้าใจ</button>
+        </div>
+    </div> <div id="card-screen" class="screen hidden">
+        
+        <button id="music-btn" onclick="toggleMusic()">🎵 Play Music</button>
+
+        <div class="scene">
+            <div class="card" id="the-card" onclick="flipCard()">
+                <div class="card-face card-front">
+                    <p>แตะเพื่อเปิดการ์ด</p>
+                </div>
+                <div class="card-face card-back">
+                    <div class="polaroid-frame">
+                        <div class="image-container">
+                            <img id="card-image" src="" alt="Healing Image" crossorigin="anonymous">
+                            <div class="loading-spinner">กำลังโหลด...</div>
+                        </div>
+                        <p id="question-text">...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <textarea id="user-answer" placeholder="เขียนความรู้สึกของคุณที่นี่..."></textarea>
+        </div>
+
+        <div class="action-buttons">
+            <button onclick="drawNewCard()">สุ่มใบใหม่</button>
+            <button onclick="saveAsImage()">บันทึกรูปภาพ</button>
+            <button onclick="goHome()">กลับหน้าแรก</button>
+        </div>
+    </div>
+
+    <audio id="bg-audio" loop></audio>
+    
+    <div id="whisper-box" class="whisper-hidden">
+        <p id="whisper-en" style="font-weight: bold; margin-bottom: 5px;"></p>
+        <p id="whisper-th" style="font-size: 14px; color: #555;"></p>
+    </div>
+
+    <div id="ios-install-prompt" class="ios-prompt hidden" style="display: none;">
+        <div class="prompt-content">
+            <p>📲 <b>ติดตั้งแอป "ฮีลใจ"</b> <br> เพื่อเก็บไว้ใช้งานได้ทุกวัน</p>
+            <p class="instruction">1. แตะปุ่ม <b>แชร์</b> <img src="https://cdn-icons-png.flaticon.com/512/1358/1358023.png" width="16"> ด้านล่าง <br> 2. เลือก <b>"เพิ่มไปยังหน้าจอโฮม"</b></p>
+            <button onclick="closePrompt()">เข้าใจแล้ว</button>
+        </div>
+        <div class="arrow-down"></div>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
